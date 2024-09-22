@@ -1,0 +1,5 @@
+C:\Users\Acer>cd downloads
+C:\Users\Acer\Downloads>cd challenge_2024
+C:\Users\Acer\Downloads\challenge_2024>python3 -m venv fastapi-env
+C:\Users\Acer\Downloads\challenge_2024>fastapi-env/scripts/activate.bat
+(fastapi-env) C:\Users\Acer\Downloads\challenge_2024\fastapi-env\Scripts>pip install Flask
