@@ -1,6 +1,6 @@
 
 # challenge_2024
-This project will create a api rest with python and Flask to load csv files.
+This project will create a api rest with python and FastApi to load csv files.
 First I will create the virtual enviorment, 
 then I will download the libraries with pip install,
 then I will create the api for load the data
