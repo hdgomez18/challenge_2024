@@ -1,27 +1,26 @@
-from flask import Flask, jsonify, request
+from fastapi import FastAPI, UploadFile, File
+import pysftp
 
-app = Flask(__name__)
-@app.route('/')
-def root():
-    return "Hello world"
 
-@app.route("/uploadfiles", methods=['POST'])
-def create_new_file():
-  file_name = 'C:\Users\Acer\Downloads\challenge_2024\files\deparments.csv'
+app = FastAPI()
 
-  headers = {
-    'x-api-key': **REST_API_KEY**,
-    'x-api-token': **REST_API_TOKEN**,
-    'accept': 'application/json'
-  }
+@app.post("/upload")
+async def upload_csv(file: UploadFile = File(...)):
+    if file.filename.endswith('.csv'):
+        #read csv data
+        contents = await file.read()
+        #save csv in sftp azure
+        # Dirección o IP del servidor SFTP.
+        host = "devanalytics.sftpchallenge@devanalytics.blob.core.windows.net"
+        # Usuario y contraseña.
+        username = "sftpchallenge"
+        password = "Uerqqtuq6t+wRkqTKMY7/zx38C"
 
-files = {'file': (file_name, open(file_name, 'rb'), 'text/csv')}
-url = "http://uploadfiles"
-response = requests.post(url +'/api/v2/core/workspaces/import/validate',
-                        files=files, verify=False, headers=headers)
-print("Created")
-print(response)
-print(response.text)
+        # Realizar la conexión.
+        with pysftp.Connection(host, username=username, password=password) as sftp:
+            with sftp.cd("/datalake/sftp_challenge/"):
+                sftp.put(contents)
+        return file.filename
 
-if __name__ == '__main__':
-    app.run(debug=True)
+    else:
+        return {'error: Only csv files are allowed'}
